@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>內心小劇場 demo</title>
+<style>
+:root{--bg:#fafaf7;--card:#fff;--tx:#1f2328;--sub:#667085;--bd:#e2e0d8;--ac:#2f6fdb;--imp:#e0653a;--rat:#2f8f6b;--tie:#8a6dd8}
+@media(prefers-color-scheme:dark){:root{--bg:#1b1c1e;--card:#25262a;--tx:#ececec;--sub:#a0a4ab;--bd:#3a3c41;--ac:#6fa0f5;--imp:#f08a62;--rat:#5cc29a;--tie:#b39cf0}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.6 system-ui,-apple-system,"Noto Sans TC","PingFang TC",sans-serif}
+main{max-width:680px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:22px;margin:0 0 4px}
+.sub{color:var(--sub);font-size:13px;margin:0 0 16px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;margin-bottom:14px}
+label{display:block;font-size:13px;color:var(--sub);margin:10px 0 4px}
+input[type=text],input[type=number],select{width:100%;padding:9px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chk{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:14px}
+button{font:inherit;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:8px;padding:8px 12px;cursor:pointer}
+button.pri{background:var(--ac);border-color:var(--ac);color:#fff;width:100%;margin-top:14px;padding:10px}
+.ex{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.ex button{font-size:13px;padding:5px 10px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td{padding:5px 4px;border-bottom:1px solid var(--bd)}
+td.n{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.pos{color:var(--rat)}.neg{color:var(--imp)}
+.bubble{padding:9px 12px;border-radius:12px;margin:8px 0;max-width:88%}
+.imp{background:color-mix(in srgb,var(--imp) 14%,transparent);border:1px solid var(--imp)}
+.rat{background:color-mix(in srgb,var(--rat) 14%,transparent);border:1px solid var(--rat);margin-left:auto}
+.who{font-size:12px;font-weight:600;margin-bottom:2px}
+.verdict{border-radius:12px;padding:14px;border:2px solid var(--tie)}
+.verdict.v-imp{border-color:var(--imp)}.verdict.v-rat{border-color:var(--rat)}
+.verdict h3{margin:0 0 6px;font-size:17px}
+.check{font-size:13px;color:var(--sub)}
+.note{font-size:12px;color:var(--sub)}
+.warn{border-color:#c98a1b;background:color-mix(in srgb,#c98a1b 12%,transparent)}
+.hide{display:none}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.chip{font-size:13px;padding:4px 10px;border-radius:999px}
+.chip.sel{background:var(--ac);border-color:var(--ac);color:#fff}
+.me{background:var(--ac);color:#fff;margin-left:auto;border-radius:12px}
+.status{font-size:13px;color:var(--sub);margin:10px 0;text-align:center}
+.dots{color:var(--sub);font-style:italic}
+.bubble{line-height:1.7}
+</style>
+</head>
+<body>
+<main>
+<h1>🎭 內心小劇場 demo</h1>
+<p class="sub">勝負由條件評分決定（規則與期末版相同）。小人台詞為模板示意，正式版會由 Colab 上的 LLM 生成。</p>
+
+<div class="card">
+  <div class="ex" id="examples">
+    <button data-act="ex" data-i="0">範例：前任</button>
+    <button data-act="ex" data-i="1">範例：追劇</button>
+    <button data-act="ex" data-i="2">範例：手機</button>
+  </div>
+  <label for="what">你在糾結什麼？</label>
+  <input type="text" id="what" placeholder="例如：想聯絡前任、想熬夜追劇、想買新手機">
+  <div class="row">
+    <div><label for="regret">做了之後會後悔的機率（1 到 5）</label><select id="regret"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></div>
+    <div><label for="joy">做了能帶來多少快樂（1 到 5）</label><select id="joy"><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option></select></div>
+  </div>
+  <div class="row">
+    <div><label for="emo">現在情緒多上頭（1 到 5）</label><select id="emo"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></div>
+    <div><label for="tired">今天多累（1 到 5）</label><select id="tired"><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option></select></div>
+  </div>
+  <div class="row">
+    <div><label for="ind">本週已放縱幾次（可留空）</label><input type="number" id="ind" min="0" placeholder="沒有就留空"></div>
+    <div></div>
+  </div>
+  <div class="chk"><input type="checkbox" id="irrev"><label for="irrev" style="margin:0;color:inherit">做了就很難收回（說出口、買下去、發出去）</label></div>
+  <div class="chk"><input type="checkbox" id="goal"><label for="goal" style="margin:0;color:inherit">會影響明天或長期目標</label></div>
+  <button class="pri" data-act="run">開演</button>
+</div>
+
+<div id="ctl" class="hide" style="text-align:right;margin-bottom:8px"><button data-act="skipanim">跳過動畫</button></div>
+<div id="out"></div>
+
+<div class="card">
+  <div style="font-weight:600">本週戰績</div>
+  <div id="tally" class="note">還沒有紀錄</div>
+</div>
+<p class="note">分數皆為你自己的主觀評分，僅供參考；此頁不會上傳任何資料。</p>
+</main>
+<script>
+(function(){
+var HEAVY=/自殺|輕生|想死|傷害自己|自殘|不想活/;
+var EX=[
+ {what:'想聯絡前任',regret:4,joy:3,emo:5,tired:4,ind:null,irrev:true,goal:false},
+ {what:'想熬夜追劇',regret:3,joy:5,emo:2,tired:4,ind:1,irrev:false,goal:false},
+ {what:'想買一支新手機',regret:3,joy:4,emo:3,tired:2,ind:1,irrev:false,goal:false}
+];
+var tally={rat:0,imp:0,tie:0,took:0};
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+function scoreConditions(c){
+  var items=[],s=0;
+  function add(t,v){s+=v;items.push({t:t,v:v})}
+  add('後悔機率 '+c.regret+' 分',c.regret>=4?2:c.regret===3?1:-1);
+  add(c.irrev?'做了很難收回':'做了還能收回',c.irrev?1:0);
+  add(c.goal?'會影響明天或長期目標':'不影響明天或長期目標',c.goal?1:0);
+  add('情緒上頭程度 '+c.emo+' 分',c.emo>=4?1:0);
+  add('期待快樂 '+c.joy+' 分',c.joy>=4?-1:0);
+  add('今天疲累 '+c.tired+' 分',c.tired>=4?-1:0);
+  if(c.ind===null)add('本週放縱次數（未填，不計分）',0);else add('本週已放縱 '+c.ind+' 次',c.ind>=3?1:0);
+  return{score:s,items:items,verdict:s>=2?'rat':s<=-1?'imp':'tie'};
+}
+
+function lines(res,c){
+  var w=c.what,sc=res.score,sg=(sc>0?'+':'')+sc;
+  var L=[];
+  L.push(['imp',c.joy>=4?'「'+w+'」欸，你自己都打了快樂 '+c.joy+' 分，這不就是你現在最想要的嗎？人生本來就是要做讓自己開心的事，每次都想那麼多，最後什麼都沒做，那才是真的會後悔吧！':'「'+w+'」又不是什麼天大的事，快樂 '+c.joy+' 分也是快樂啊。你一直在顧慮，不累嗎？有時候隨性一點，生活才有味道嘛！']);
+  L.push(['rat',c.regret>=4?'我先說重點：你自己給的後悔機率是 '+c.regret+' 分，這不是我編的，是你的直覺在警告你。'+(c.irrev?'而且這件事做了就很難收回，':'')+'現在開心三分鐘，之後可能要花很久才處理得完。':c.regret===3?'後悔機率 '+c.regret+' 分，代表你自己也在猶豫，大概一半一半。'+(c.irrev?'做了還很難收回，':'')+'既然沒那麼篤定，為什麼要急著現在做？':'我承認後悔機率只有 '+c.regret+' 分，風險不高。但「風險不高」不等於「應該做」，我只是想確認你不是被當下的氣氛推著走。']);
+  L.push(['imp',c.tired>=4?'你今天累到 '+c.tired+' 分耶！一整天都在撐，現在連一件想做的事都要被你自己審判？小理你太嚴格了，累的時候就是需要一點慰勞，不然下一個明天怎麼撐得下去？':'小理，你每次都拿風險嚇人，可是日子是用來過的，不是用來管理的。就算不是特別累，偶爾也該允許自己任性一次吧？']);
+  L.push(['rat',c.emo>=4?'你現在情緒上頭 '+c.emo+' 分，這時候做的決定通常不太可靠。同一件事，睡一覺之後你很可能會有完全不同的想法。我不是要你別做，是要你別在最熱的時候做。':c.goal?'你自己勾了這會影響明天或長期目標。慰勞自己有很多種方式，不一定要選會影響目標的這一種。':'情緒其實不算太高，這點對你有利，我同意。但慰勞自己有很多種方式，不一定非要選這一個。']);
+  L.push(['imp','好啦好啦，那我們讓分數說話。目前總分是 '+sg+'，'+(sc<=-1?'分數站在我這邊，這次就讓我贏吧！而且贏了我也會乖乖收手，我保證！':sc>=2?'好吧，分數是偏向你。但我還是要說，開心本來就有價值，不能全部拿來換成「理智」。':'勢均力敵耶，那就看裁判怎麼折衷囉。')]);
+  L.push(['rat','我同意用分數決定，因為這代表我們都不是亂說的。'+(sc>=2?'分數偏向克制，我不是想贏，只是希望你之後不用收拾善後。':sc<=-1?'如果結果是你贏，我也接受，但請你記得設個上限，做完就收手。':'既然平手，我建議先放一下，隔天再看看還想不想做。')]);
+  return L;
+}
+
+function judge(res,inp){
+  if(res.verdict==='imp')return{cls:'v-imp',h:'判決：衝動小人勝',b:'總分 '+res.score+'，條件偏向放縱。合理放縱方案：可以做，但設個上限，做完就收手。'};
+  if(res.verdict==='rat')return{cls:'v-rat',h:'判決：理智小人勝',b:'總分 +'+res.score+'，這次條件偏向克制。折衷方案：先放著，等情緒退了一天，如果還是想做再決定。'};
+  return{cls:'',h:'判決：平手',b:'總分 '+res.score+'，雙方勢均力敵。折衷方案：先放著，等 24 小時後還想做再做。'};
+}
+
+function reflect(res,j){
+  var ok=(res.verdict==='imp'&&j.h.indexOf('衝動')>-1)||(res.verdict==='rat'&&j.h.indexOf('理智')>-1)||(res.verdict==='tie'&&j.h.indexOf('平手')>-1);
+  return ok?'Reflection 檢查：判決與分數一致，沒有出現額外數字，通過。':'Reflection 檢查：判決與分數不一致，需要重寫。';
+}
+
+var KW={
+ imp:{'快樂':['你一直講風險，那「快樂」呢？你自己打了 {joy} 分，難道不算數嗎？','快樂我不否認，但要看這份快樂能撐多久，過了之後你還覺得值得嗎？'],
+  '犒賞自己':['「犒賞自己」不行嗎？你這陣子夠辛苦了，值得一點獎勵！','犒賞自己很合理，只是要確認這是你真正想要的，而不是一時情緒的出口。'],
+  '人生苦短':['人生苦短啊！等你想清楚，機會早就過了！','人生苦短沒錯，所以更要把時間和心力留給真正重要的事。'],
+  '別想太多':['「別想太多」，直接做就對了！','不用想太多可以，但至少花一分鐘想想：隔天的你會怎麼看這件事？'],
+  '只活一次':['「只活一次」，沒做才會後悔一輩子！','只活一次沒錯，所以更值得挑最有價值的選擇，而不是最順手的。'],
+  '太累了':['你都「太累了」，還要硬撐著克制自己？','累的時候最容易衝動，這時候做的決定，更需要多檢查一次。']},
+ rat:{'後悔':['「後悔」，你自己打了 {regret} 分，別假裝沒看到！','後悔是之後的事，現在的快樂可是真的。'],
+  '收不回來':['「收不回來」，你確定要賭嗎？','沒做也有收不回來的東西，錯過同樣不可逆。'],
+  '情緒上頭':['你現在「情緒上頭」，這是冷靜的決定嗎？','情緒就是真實的感受，為什麼要否定它？'],
+  '明天的你':['想想「明天的你」要承擔什麼。','明天的你也會感謝今天有被好好對待的自己。'],
+  '長期目標':['「長期目標」呢？這會把你拉離原本的方向。','一次不會毀掉長期目標，長期壓抑才會。'],
+  '冷靜一下':['先「冷靜一下」，隔天再決定又不會怎樣。','冷靜久了，想做的心情也冷掉了，那才是真正的損失。']}
+};
+function pools(c){
+  var a=['犒賞自己','人生苦短','別想太多','只活一次'];
+  if(c.joy>=4)a.unshift('快樂');if(c.tired>=4)a.unshift('太累了');
+  var b=['冷靜一下'];
+  if(c.regret>=3)b.unshift('後悔');if(c.irrev)b.splice(1,0,'收不回來');
+  if(c.emo>=4)b.splice(b.length-1,0,'情緒上頭');
+  if(c.goal)b.splice(b.length-1,0,'明天的你','長期目標');
+  return{imp:a,rat:b};
+}
+function stance(side,c,sg){
+  var n=res_n(sg);
+  if(side==='imp')return n>=2?'就算總分 '+sg+' 偏向你，快樂 '+c.joy+' 分也不該被忽略。':n<=-1?'快樂 '+c.joy+'分、總分 '+sg+'，數字站在我這邊。':'快樂 '+c.joy+' 分，總分 '+sg+'，勢均力敵，我不會輕易讓步。';
+  return n<=-1?'就算總分 '+sg+' 偏向衝動，我還是希望你先確認這是你真正想要的。':n>=2?'後悔機率 '+c.regret+' 分、總分 '+sg+'，數字站在我這邊。':'後悔機率 '+c.regret+' 分，總分 '+sg+'，勢均力敵，我不會輕易讓步。';
+}
+function res_n(sg){return parseInt(String(sg).replace('+',''),10)}
+function fill(t,c){return t.replace('{joy}',c.joy).replace('{regret}',c.regret)}
+function kwLines(picked,res,c){
+  var out=[],sg=(res.score>0?'+':'')+res.score;
+  picked.forEach(function(p){
+    var atk=p.side,def=atk==='imp'?'rat':'imp',t=KW[atk][p.kw];
+    if(t){out.push([atk,fill(t[0],c)]);out.push([def,fill(t[1],c)])}
+    else{out.push([atk,'「'+p.kw+'」！這一點你要怎麼解釋？別想繞過去！']);
+      out.push([def,'「'+p.kw+'」聽起來有它的道理，但它改變不了目前總分 '+sg+'，我還是堅持原本的看法。'])}
+  });
+  return out;
+}
+var kwResolve=null;
+function askKw(out,side,name,pool,tok){
+  if(window.__fast){var q=window.__kwq||[];return Promise.resolve(q.length?q.shift():{type:'free'})}
+  var chips=pool.map(function(k){return '<button class="chip" data-act="kwpick" data-kw="'+esc(k)+'">'+esc(k)+'</button>'}).join('');
+  var card=put(out,'<div style="font-weight:600;margin-bottom:4px">🎯 輪到 '+name+'：你要幫他補什麼彈藥？</div><div class="note">點一個關鍵字，或輸入自己的話，讓他拿來攻擊對方。</div><div class="chips">'+chips+'</div><div class="row" style="grid-template-columns:1fr 70px;margin-top:10px"><input type="text" id="kwin" placeholder="自己輸入一句話或關鍵字"><button data-act="kwtext">送出</button></div><div style="display:flex;gap:8px;margin-top:10px"><button data-act="kwfree">讓他自由發揮</button><button data-act="kwend">請裁判判決</button></div>','card');
+  return new Promise(function(r){kwResolve=function(v){kwResolve=null;card.remove();r(v)}});
+}
+var token=0,SPEED=1;
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms*SPEED)})}
+async function typeInto(el,text,tok){
+  if(SPEED===0){el.textContent=text;return}
+  for(var i=1;i<=text.length;i++){if(tok!==token)return;if(SPEED===0){el.textContent=text;return}el.textContent=text.slice(0,i);await sleep(24)}
+}
+function put(out,html,cls){
+  var d=document.createElement('div');d.className=cls||'';d.innerHTML=html;out.appendChild(d);
+  if(d.scrollIntoView)try{d.scrollIntoView({block:'nearest',behavior:'smooth'})}catch(e){}
+  return d;
+}
+async function run(){
+  var g=function(i){return parseInt($(i).value,10)||0};
+  var inp={what:$('what').value.trim(),regret:g('regret'),joy:g('joy'),emo:g('emo'),tired:g('tired'),ind:$('ind').value===''?null:g('ind'),irrev:$('irrev').checked,goal:$('goal').checked};
+  var out=$('out');token++;var tok=token;SPEED=window.__fast?0:1;
+  if(!inp.what){out.innerHTML='<div class="card note">先寫下你在糾結什麼。</div>';return}
+  if(HEAVY.test(inp.what)){
+    out.innerHTML='<div class="card warn"><b>這個話題比較沉重，小劇場不適合拿來吵。</b><br>如果你現在很難受，請找信任的人聊聊，或撥打安心專線 1925。</div>';
+    return;
+  }
+  out.innerHTML='';$('ctl').classList.remove('hide');
+  var live=function(){return tok===token};
+  var res=scoreConditions(inp),j=judge(res,inp);
+  var me=put(out,'<div class="who">你</div><span></span>','bubble me');
+  await typeInto(me.querySelector('span'),'我在糾結：'+inp.what,tok);if(!live())return;
+  await sleep(500);
+  var st=put(out,'⚙️ Python 正在計算條件分數…','status');await sleep(800);if(!live())return;
+  st.textContent='⚙️ Python 條件評分完成';
+  var card=put(out,'<table></table>','card');var tb=card.querySelector('table');
+  for(var i=0;i<res.items.length;i++){
+    var it=res.items[i];
+    tb.insertAdjacentHTML('beforeend','<tr><td>'+esc(it.t)+'</td><td class="n '+(it.v>0?'pos':it.v<0?'neg':'')+'">'+(it.v>0?'+':'')+it.v+'</td></tr>');
+    await sleep(350);if(!live())return;
+  }
+  tb.insertAdjacentHTML('beforeend','<tr><td><b>總分</b></td><td class="n"><b>'+(res.score>0?'+':'')+res.score+'</b></td></tr>');
+  card.insertAdjacentHTML('beforeend','<p class="note" style="margin:10px 0 0">怎麼看總分：這是基礎分：正分偏向理智小人，負分偏向衝動小人。辯論結束後，裁判會依你補的論點微調（最多 ±2）；最終 +2 以上理智贏，−1 以下衝動贏，0 到 +1 平手。分數只是你自評的加總，不是客觀答案。</p>');
+  await sleep(700);if(!live())return;
+  var L=lines(res,inp),pl=pools(inp),prev=null,sg=(res.score>0?'+':'')+res.score;
+  put(out,'🎭 小劇場開演（示意台詞，正式版由 LLM 即時生成）。從第二句起，每次換人前你可以給他武器。','status');
+  var order=['imp','rat','imp','rat','imp','rat'],ended=false,args={imp:[],rat:[]};
+  for(var k=0;k<order.length&&!ended;k++){
+    var side=order[k],name=side==='imp'?'😈 小衝':'🧐 小理',text=L[k][1],kwUsed=null;
+    if(k>0){
+      var ch=await askKw(out,side,name,pl[side],tok);if(!live())return;
+      if(ch.type==='end'){ended=true;break}
+      if(ch.type==='kw'||ch.type==='text'){
+        args[side].push(ch.v);
+        var ub=put(out,'<div class="who">你幫'+name+'補一句</div><span></span>','bubble me');
+        await typeInto(ub.querySelector('span'),ch.v,tok);if(!live())return;
+        await sleep(400);
+      }
+      if(ch.type==='kw'){
+        kwUsed=ch.v;var t=KW[side][ch.v];
+        text=(t?fill(t[0],inp):'「'+ch.v+'」！這一點你要怎麼解釋？別想繞過去！')+' '+stance(side,inp,sg);
+      }else if(ch.type==='text'){
+        text='你提到「'+ch.v+'」，這我聽進去了。'+(side==='imp'?'但我要說，':'但我要提醒，')+'這改變不了整體狀況。'+stance(side,inp,sg);
+      }else if(prev&&prev.kw&&KW[prev.side][prev.kw]){
+        text=fill(KW[prev.side][prev.kw][1],inp)+' '+stance(side,inp,sg);
+      }
+    }
+    var ty=put(out,'<div class="who">'+name+'</div><span class="dots">正在輸入…</span>','bubble '+side);
+    await sleep(900);if(!live())return;
+    var sp=ty.querySelector('span');sp.className='';sp.textContent='';
+    await typeInto(sp,text,tok);if(!live())return;
+    prev={side:side,kw:kwUsed};
+    await sleep(500);
+  }
+  var st2=put(out,'⚖️ 裁判正在整理雙方論點…','status');await sleep(1200);if(!live())return;
+  var raw=args.rat.length-args.imp.length,adj=Math.max(-2,Math.min(2,raw));
+  var why='小理這邊被補了 '+args.rat.length+' 個論點'+(args.rat.length?'（'+args.rat.map(function(x){return '「'+x+'」'}).join('、')+'）':'')+'，小衝這邊 '+args.imp.length+' 個'+(args.imp.length?'（'+args.imp.map(function(x){return '「'+x+'」'}).join('、')+'）':'')+'。';
+  var fin=res.score+adj,res2={score:fin,verdict:fin>=2?'rat':fin<=-1?'imp':'tie'},j2=judge(res2,inp);
+  st2.textContent='⚖️ 裁判依辯論微調分數，並下判決';
+  put(out,'<div style="font-weight:600;margin-bottom:6px">裁判微調（示意）</div><table><tr><td>基礎分（Python 條件評分）</td><td class="n">'+(res.score>0?'+':'')+res.score+'</td></tr><tr><td>辯論微調（'+esc(why)+'上限 ±2）</td><td class="n '+(adj>0?'pos':adj<0?'neg':'')+'">'+(adj>0?'+':'')+adj+'</td></tr><tr><td><b>最終分數</b></td><td class="n"><b>'+(fin>0?'+':'')+fin+'</b></td></tr></table>','card');
+  await sleep(700);if(!live())return;
+  put(out,'<div class="verdict '+j2.cls+'"><h3>'+j2.h+'</h3>'+esc(j2.b)+'</div>','card');
+  await sleep(600);if(!live())return;
+  var st3=put(out,'🔍 Reflection 檢查中…','status');await sleep(900);if(!live())return;
+  st3.textContent=reflect(res2,j2)+(Math.abs(adj)<=2?' 微調幅度在 ±2 以內，理由也引用了辯論中實際出現的論點。':'');
+  put(out,'<div style="display:flex;gap:8px"><button data-act="take" data-v="'+res2.verdict+'">接受判決</button><button data-act="skip" data-v="'+res2.verdict+'">不接受</button></div>','card');
+  $('ctl').classList.add('hide');
+}
+
+function renderTally(){
+  var n=tally.rat+tally.imp+tally.tie;
+  $('tally').innerHTML=n===0?'還沒有紀錄':'共 '+n+' 場：理智勝 '+tally.rat+'、衝動勝 '+tally.imp+'、平手 '+tally.tie+'；接受判決 '+tally.took+' 次';
+}
+
+function showSel(){
+  var e=$('kwsel');if(!e)return;
+  e.textContent=picked.length?'已選：'+picked.map(function(p){return (p.side==='imp'?'😈':'🧐')+p.kw}).join('、'):'尚未選擇（可直接開吵）';
+}
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-act]');if(!b)return;
+  var a=b.getAttribute('data-act');
+  if(a==='run')run();
+  else if(a==='skipanim'){SPEED=0}
+  else if(a==='kwpick'){if(kwResolve)kwResolve({type:'kw',v:b.getAttribute('data-kw')})}
+  else if(a==='kwtext'){var tv=$('kwin').value.trim();if(tv&&kwResolve)kwResolve({type:'text',v:tv})}
+  else if(a==='kwfree'){if(kwResolve)kwResolve({type:'free'})}
+  else if(a==='kwend'){if(kwResolve)kwResolve({type:'end'})}
+  else if(a==='ex'){
+    var x=EX[+b.getAttribute('data-i')];
+    $('what').value=x.what;['regret','joy','emo','tired'].forEach(function(k){$(k).value=String(x[k])});
+    $('ind').value=x.ind===null?'':x.ind;$('irrev').checked=x.irrev;$('goal').checked=x.goal;run();
+  }else if(a==='take'||a==='skip'){
+    var v=b.getAttribute('data-v');tally[v]++;if(a==='take')tally.took++;
+    b.parentNode.innerHTML='<span class="note">已記錄。</span>';renderTally();
+  }
+});
+window.__scoreConditions=scoreConditions;
+})();
+</script>
+</body>
+</html>

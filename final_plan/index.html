@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中正資管所 期末專案發想：內心小劇場</title>
+<style>
+:root{--bg:#fafaf7;--card:#fff;--tx:#1f2328;--sub:#667085;--bd:#e2e0d8;--ac:#2f6fdb;--ax:#b9b6a9;--t1:#1f2328;--t2:#667085;--code:#f2f1ec}
+@media(prefers-color-scheme:dark){:root{--bg:#1b1c1e;--card:#25262a;--tx:#ececec;--sub:#a0a4ab;--bd:#3a3c41;--ac:#6fa0f5;--ax:#6b6e75;--t1:#ececec;--t2:#a0a4ab;--code:#2b2d31}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.75 system-ui,-apple-system,"Noto Sans TC","PingFang TC",sans-serif}
+main{max-width:860px;margin:0 auto;padding:28px 18px 64px}
+h1{font-size:26px;line-height:1.35;margin:0 0 6px}
+h2{font-size:20px;margin:36px 0 10px;padding-top:6px;border-top:1px solid var(--bd)}
+.meta{color:var(--sub);font-size:14px;margin-bottom:18px}
+.title{font-weight:700;font-size:17px}
+.note{color:var(--sub);font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:14.5px;margin:12px 0;background:var(--card)}
+th,td{border:1px solid var(--bd);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--code)}
+pre{background:var(--code);padding:14px;border-radius:8px;overflow:auto;font-size:13px;line-height:1.55}
+code{background:var(--code);padding:1px 5px;border-radius:4px}pre code{background:none;padding:0}
+.fig{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px;margin:12px 0}
+.fig svg{width:100%;height:auto;display:block}
+ul.chk{list-style:none;padding-left:0}ul.chk li{margin:4px 0}
+a{color:var(--ac)}
+.btn{display:inline-block;background:var(--ac);color:#fff;text-decoration:none;padding:10px 18px;border-radius:8px;margin:6px 0}
+</style></head><body><main>
+<h1>期末專案構想：「內心小劇場」，衝動小人與理智小人替你吵出決定</h1>
+<div class="meta">2026-11-09 · 生成式 AI 期末專案發想</div>
+
+<h2>繳交標題</h2>
+<p class="title">中正資管所 期末專案發想：內心小劇場</p>
+<p><b>「內心小劇場」：讓衝動小人和理智小人替你吵出決定的 AI 機器人</b></p>
+<p>遇到「要不要買」「要不要熬夜」「要不要聯絡前任」這類糾結，內心小劇場會叫出衝動小人和理智小人吵一輪，再由裁判依你當下的狀態下判決。題目完全開放，勝負由程式規則算出來，不是固定理智派贏。</p>
+
+<h2>動機：糾結很日常，但現成工具只會給標準答案</h2>
+<p>我們每天都在做小決定，糾結的往往不是答案本身，而是「想放縱」和「該克制」兩種聲音互相拉扯。一般聊天機器人只會給理性建議，缺少這個拉扯的過程，也沒有考慮你今天累不累、情緒有多上頭。</p>
+<table><thead><tr><th>痛點</th><th>具體情況</th><th>內心小劇場的對策</th></tr></thead><tbody><tr><td>腦中兩種聲音在吵</td><td>想聯絡又怕後悔，想熬夜又怕明天爆炸</td><td>讓兩個小人把雙方理由吵出來，內容有梗也好讀</td></tr><tr><td>一般建議太制式</td><td>回答永遠是「理性評估後再決定」</td><td>先用規則依情緒、後悔、疲累等通用條件評分，再下判決</td></tr><tr><td>結果總是理智派贏，很無聊</td><td>固定導向克制，使用者很快就不想用</td><td>勝負由分數決定，條件允許時衝動派會贏，並給「合理放縱」方案</td></tr><tr><td>每次決定彼此獨立</td><td>不知道自己這週已經放縱幾次</td><td>記錄戰績，下次判決會參考本週放縱次數</td></tr></tbody></table>
+
+<h2>使用流程：糾結一件事的完整過程</h2>
+<p>以「想聯絡前任」為例。使用者自我評分：後悔機率 4 分、期待快樂 3 分、情緒上頭 5 分、今天疲累 4 分，而且訊息一發出就收不回。</p>
+<table><thead><tr><th>步驟</th><th>使用者操作</th><th>內心小劇場的輸出</th></tr></thead><tbody><tr><td>1. 輸入</td><td>寫下糾結的事，填七項通用條件（放縱次數選填）</td><td>確認輸入</td></tr><tr><td>2. 基礎評分</td><td>無，自動進行</td><td>Python 函式算出基礎分 +3，並列出每項加減分</td></tr><tr><td>3. 開吵</td><td>無</td><td>小衝先講一句，逐字打出</td></tr><tr><td>4. 輪流發言</td><td>每次換人前，選一個關鍵字、自己輸入一句話，或讓他自由發揮</td><td>輪到的一方拿你給的論點去攻擊對方，來回最多六句</td></tr><tr><td>5. 裁判微調</td><td>無，自動進行</td><td>裁判整理雙方論點，依辯論內容微調分數，上限 ±2</td></tr><tr><td>6. 判決</td><td>無，自動進行</td><td>依最終分數判決，附合理放縱或折衷方案</td></tr><tr><td>7. 檢查與記錄</td><td>回覆「接受」或「不接受」</td><td>Reflection 檢查判決與分數一致，再更新本週戰績</td></tr></tbody></table>
+<p>條件評分規則由 Python 函式執行。七項條件對任何題目都適用，不綁定金錢。分數為正偏向理智派，為負偏向衝動派：</p>
+<table><thead><tr><th>條件</th><th>加減分</th></tr></thead><tbody><tr><td>後悔機率 4 到 5 分</td><td>+2</td></tr><tr><td>後悔機率 3 分</td><td>+1</td></tr><tr><td>後悔機率 1 到 2 分</td><td>−1</td></tr><tr><td>做了很難收回</td><td>+1</td></tr><tr><td>會影響明天或長期目標</td><td>+1</td></tr><tr><td>情緒上頭（4 到 5 分）</td><td>+1</td></tr><tr><td>期待快樂 4 到 5 分</td><td>−1</td></tr><tr><td>今天很累（4 到 5 分）</td><td>−1</td></tr><tr><td>本週已放縱 3 次以上（選填，留空不計分）</td><td>+1</td></tr></tbody></table>
+<p>上表算出的是基礎分。辯論結束後，裁判依雙方被補的論點微調分數，Python 把微調值一律截在 ±2 以內，微調後的最終分數 +2 以上判理智派勝，−1 以下判衝動派勝，0 到 +1 為平手，由裁判給折衷方案。這樣使用者的每次介入都有影響，但 LLM 不能推翻整個評分。</p>
+
+<h2>概念圖</h2>
+<div class="fig"><svg viewBox="0 0 760 444" role="img" aria-label="內心小劇場系統架構" font-size="13"><defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--ax)"/></marker></defs><text x="24" y="28" font-size="15" font-weight="600" fill="var(--t1)">基礎分由 Python 算，LLM 只能在 ±2 內微調</text><rect x="24" y="48" width="200" height="88" rx="8" fill="none" stroke="var(--ax)" stroke-width="1.25"/><text x="124.0" y="72" text-anchor="middle" font-weight="600" fill="var(--t1)">使用者輸入</text><text x="124.0" y="90" text-anchor="middle" font-size="11.5" fill="var(--t2)">任何糾結的事</text><text x="124.0" y="106" text-anchor="middle" font-size="11.5" fill="var(--t2)">後悔、情緒、疲累等 7 項</text><rect x="280" y="48" width="200" height="88" rx="8" fill="var(--ac)" fill-opacity="0.12" stroke="var(--ac)" stroke-width="2"/><text x="380.0" y="72" text-anchor="middle" font-weight="600" fill="var(--t1)">Python 基礎評分</text><text x="380.0" y="90" text-anchor="middle" font-size="11.5" fill="var(--t2)">Tool Use：score_conditions()</text><text x="380.0" y="106" text-anchor="middle" font-size="11.5" fill="var(--t2)">算出基礎分，截斷微調值</text><rect x="536" y="48" width="200" height="88" rx="8" fill="none" stroke="var(--ax)" stroke-width="1.25"/><text x="636.0" y="72" text-anchor="middle" font-weight="600" fill="var(--t1)">戰績紀錄</text><text x="636.0" y="90" text-anchor="middle" font-size="11.5" fill="var(--t2)">每次勝負與接受與否</text><text x="636.0" y="106" text-anchor="middle" font-size="11.5" fill="var(--t2)">統計本週放縱次數</text><rect x="24" y="188" width="200" height="88" rx="8" fill="none" stroke="var(--ax)" stroke-width="1.25"/><text x="124.0" y="212" text-anchor="middle" font-weight="600" fill="var(--t1)">使用者介入</text><text x="124.0" y="230" text-anchor="middle" font-size="11.5" fill="var(--t2)">看對話、選關鍵字</text><text x="124.0" y="246" text-anchor="middle" font-size="11.5" fill="var(--t2)">或自己輸入一句話</text><rect x="280" y="188" width="200" height="88" rx="8" fill="none" stroke="var(--ax)" stroke-width="1.25"/><text x="380.0" y="212" text-anchor="middle" font-weight="600" fill="var(--t1)">小衝 vs 小理（LLM）</text><text x="380.0" y="230" text-anchor="middle" font-size="11.5" fill="var(--t2)">輪流發言，最多六句</text><text x="380.0" y="246" text-anchor="middle" font-size="11.5" fill="var(--t2)">拿你給的論點攻擊對方</text><rect x="536" y="188" width="200" height="88" rx="8" fill="none" stroke="var(--ax)" stroke-width="1.25"/><text x="636.0" y="212" text-anchor="middle" font-weight="600" fill="var(--t1)">裁判（LLM）</text><text x="636.0" y="230" text-anchor="middle" font-size="11.5" fill="var(--t2)">Planning：整理雙方論點</text><text x="636.0" y="246" text-anchor="middle" font-size="11.5" fill="var(--t2)">微調分數並下判決</text><rect x="536" y="332" width="200" height="88" rx="8" fill="none" stroke="var(--ax)" stroke-width="1.25"/><text x="636.0" y="356" text-anchor="middle" font-weight="600" fill="var(--t1)">Reflection 檢查</text><text x="636.0" y="374" text-anchor="middle" font-size="11.5" fill="var(--t2)">判決和分數一致嗎</text><text x="636.0" y="390" text-anchor="middle" font-size="11.5" fill="var(--t2)">理由有編造就重寫</text><rect x="24" y="332" width="456" height="88" rx="8" fill="none" stroke="var(--ax)" stroke-width="1.25"/><text x="252.0" y="356" text-anchor="middle" font-weight="600" fill="var(--t1)">輸出給使用者</text><text x="252.0" y="374" text-anchor="middle" font-size="11.5" fill="var(--t2)">小劇場對話、分數明細與微調理由</text><text x="252.0" y="390" text-anchor="middle" font-size="11.5" fill="var(--t2)">判決與合理放縱方案</text><line x1="224" y1="92" x2="280" y2="92" stroke="var(--ax)" stroke-width="1.25" marker-end="url(#a)"/><line x1="536" y1="92" x2="480" y2="92" stroke="var(--ax)" stroke-width="1.25" marker-end="url(#a)"/><line x1="380" y1="136" x2="380" y2="188" stroke="var(--ax)" stroke-width="1.25" marker-end="url(#a)"/><line x1="224" y1="232" x2="280" y2="232" stroke="var(--ax)" stroke-width="1.25" marker-end="url(#a)"/><line x1="480" y1="232" x2="536" y2="232" stroke="var(--ax)" stroke-width="1.25" marker-end="url(#a)"/><line x1="636" y1="188" x2="636" y2="136" stroke="var(--ax)" stroke-width="1.25" marker-end="url(#a)"/><line x1="636" y1="276" x2="636" y2="332" stroke="var(--ax)" stroke-width="1.25" marker-end="url(#a)"/><line x1="536" y1="376" x2="480" y2="376" stroke="var(--ax)" stroke-width="1.25" marker-end="url(#a)"/><line x1="124" y1="332" x2="124" y2="276" stroke="var(--ax)" stroke-width="1.25" marker-end="url(#a)"/><text x="508" y="84" text-anchor="middle" font-size="11.5" fill="var(--t2)">放縱次數</text><text x="390" y="166" text-anchor="start" font-size="11.5" fill="var(--t2)">基礎分與理由</text><text x="252" y="224" text-anchor="middle" font-size="11.5" fill="var(--t2)">補論點</text><text x="508" y="224" text-anchor="middle" font-size="11.5" fill="var(--t2)">對話</text><text x="646" y="166" text-anchor="start" font-size="11.5" fill="var(--t2)">記錄勝負</text><text x="646" y="308" text-anchor="start" font-size="11.5" fill="var(--t2)">判決草稿</text><text x="508" y="368" text-anchor="middle" font-size="11.5" fill="var(--t2)">通過</text><text x="134" y="308" text-anchor="start" font-size="11.5" fill="var(--t2)">顯示對話</text></svg></div>
+<p>圖中重點：基礎分由 Python 評分決定，辯論時使用者可以輪流補論點，最後由 LLM 裁判在 ±2 內微調，再經 Reflection 檢查判決是否和分數一致。</p>
+
+<h2>使用技術</h2>
+<p>沿用課堂用過的套件：AISuite 串接 Groq API，模型為 <code>groq:openai/gpt-oss-120b</code>，介面用 Gradio，API key 放在 Colab 的 Secrets。</p>
+<table><thead><tr><th>課堂技巧</th><th>在專案中的用途</th></tr></thead><tbody><tr><td>System prompt 角色設定</td><td>小衝、小理、裁判各有一份人設，口氣和立場不同</td></tr><tr><td>Tool Use</td><td>Python 函式 <code>score_conditions()</code> 依條件算分，LLM 不自己算</td></tr><tr><td>Planning</td><td>裁判先整理雙方論點，再依分數寫判決和折衷方案</td></tr><tr><td>Reflection</td><td>檢查判決是否與分數一致、有沒有編造數字，不合格就重寫</td></tr><tr><td>Gradio</td><td>輸入表單、對話顯示、戰績紀錄</td></tr></tbody></table>
+<p>評分函式的核心如下，LLM 只拿到結果：</p>
+<pre><code>def score_conditions(regret, irreversible, affects_goal, emotion, joy, tired, indulged=None):
+    s = 2 if regret >= 4 else 1 if regret == 3 else -1
+    s += 1 if irreversible else 0
+    s += 1 if affects_goal else 0
+    s += 1 if emotion >= 4 else 0
+    s += -1 if joy >= 4 else 0
+    s += -1 if tired >= 4 else 0
+    s += 1 if indulged is not None and indulged >= 3 else 0
+    return s
+
+def final_verdict(base, llm_adjust):
+    adj = max(-2, min(2, llm_adjust))   # LLM 的微調一律截在 ±2
+    s = base + adj
+    verdict = "理智派勝" if s >= 2 else "衝動派勝" if s <= -1 else "平手"
+    return {"base": base, "adjust": adj, "score": s, "verdict": verdict}</code></pre>
+
+<h2>可行性驗證</h2>
+<p>核心是「評分規則能穩定算出正確結果」。我用三個不同類型的題目手算驗證，覆蓋理智派勝、衝動派勝、平手，也已在 demo 用 JavaScript 實測一致。表中依序是後悔、收回、目標、情緒、快樂、疲累、放縱。</p>
+<table><thead><tr><th>題目</th><th>自我評分</th><th>各項分數</th><th>總分</th><th>判決</th></tr></thead><tbody><tr><td>想聯絡前任</td><td>後悔 4、難收回、情緒 5、快樂 3、累 4、放縱 2</td><td>+2、+1、0、+1、0、−1、0</td><td>+3</td><td>理智派勝</td></tr><tr><td>想熬夜追劇</td><td>後悔 3、可收回、情緒 2、快樂 5、累 4、放縱 1</td><td>+1、0、0、0、−1、−1、0</td><td>−1</td><td>衝動派勝</td></tr><tr><td>想買一支新手機</td><td>後悔 3、可收回、情緒 3、快樂 4、累 2、放縱 1</td><td>+1、0、0、0、−1、0、0</td><td>0</td><td>平手</td></tr></tbody></table>
+<p>確認清單：</p>
+<ul class="chk"><li>☑ 評分規則可用 Python 穩定計算，三個情境結果與手算一致</li><li>☑ 課堂已用過 AISuite + Groq + Gradio，技術上無新增套件</li><li>☑ 輪流發言、使用者補論點、裁判微調的完整流程已用 demo 走過</li><li>☐ 在 Colab 實測 LLM 能照分數寫出一致的判決，且微調值和理由合理</li></ul>
+
+<h2>目前進度與開發時程</h2>
+<p>目前已完成構想、評分規則設計、三個情境的手算驗證，並做了可互動的示意 demo（對話為模板、評分為真實規則）。</p>
+<ul class="chk"><li>☑ 確定題目與評分規則</li><li>☑ 手算驗證三個情境</li><li>☑ 完成概念圖與示意 demo</li><li>☐ Colab 寫 <code>score_conditions()</code> 並用三個情境測試</li><li>☐ 串接 AISuite + Groq，完成小衝、小理、裁判的 system prompt</li><li>☐ 加上 Reflection 檢查與戰績紀錄</li><li>☐ 用 Gradio 包成介面</li></ul>
+<p>可以互動的示意 demo（評分與判決邏輯是真的，小人台詞為模板，正式版由 Colab 上的 LLM 生成）：</p>
+<p><a class="btn" href="demo.html">開啟內心小劇場 demo</a></p>
+
+<h2>風險與備案</h2>
+<table><thead><tr><th>風險</th><th>備案</th></tr></thead><tbody><tr><td>使用者輸入沉重話題（傷害自己等）</td><td>偵測關鍵字時不跑小劇場，改顯示溫和提醒，建議找信任的人或專業單位談談（台灣安心專線 1925）</td></tr><tr><td>LLM 裁判微調過頭或編造理由</td><td>Python 把微調值截在 ±2，Reflection 檢查理由是否引用辯論中實際出現的論點</td></tr><tr><td>自我評分很主觀，結果可能不準</td><td>定位為幫你看清自己的狀態，不是替你做決定，判決附「僅供參考」</td></tr><tr><td>內容屬個人資料</td><td>不保存到伺服器，示範只用虛構資料</td></tr><tr><td>Groq 免費額度限速或回傳空白</td><td>重試一次，仍失敗就用模板台詞補上</td></tr></tbody></table>
+</main></body></html>
